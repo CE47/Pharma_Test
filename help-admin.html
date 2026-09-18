@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Help Center · PharmaB2B</title>
+<meta name="description" content="Admin and client guide for PharmaB2B — manage accounts, review payments, fulfill orders, configure delivery, and understand the architecture and security design.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%230F2B2C'/%3E%3Crect x='6' y='4' width='2' height='7' rx='1' fill='%23F1C27D'/%3E%3Crect x='8.5' y='4' width='2' height='7' rx='1' fill='%23F1C27D'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/fonts/fonts.css">
+<link rel="stylesheet" href="/static/css/style.css?v=21">
+<link rel="stylesheet" href="/static/css/help.css?v=2">
+</head>
+<body class="help-body">
+
+<svg class="grain" aria-hidden="true"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#noise)"/></svg>
+
+<header class="help-header">
+  <div class="help-brand">
+    <span class="help-brand-mark"><span class="help-brand-capsule"></span></span>
+    <span>
+      <span class="help-brand-name">Pharma<em>B2B</em></span>
+      <span class="help-brand-tag">Admin Help Center</span>
+    </span>
+  </div>
+  <div class="help-header-actions">
+    <a class="help-gotolink is-outline" href="/">Sign in</a>
+    <a class="help-gotolink" href="/help">← Buyer guide</a>
+  </div>
+</header>
+
+<div class="help-layout">
+
+  <nav class="help-toc" aria-label="Admin help sections">
+    <span class="help-toc-label">Guide</span>
+    <a href="#admin-at-a-glance"><span class="toc-num">01</span> Admin platform at a glance</a>
+    <a href="#overview-dashboard"><span class="toc-num">02</span> Overview dashboard</a>
+    <a href="#accounts"><span class="toc-num">03</span> Accounts</a>
+    <a href="#admin-products"><span class="toc-num">04</span> Products</a>
+    <a href="#admin-orders"><span class="toc-num">05</span> Orders</a>
+    <a href="#pending-reviews"><span class="toc-num">06</span> Pending Reviews</a>
+    <a href="#fulfillment"><span class="toc-num">07</span> Fulfillment</a>
+    <a href="#delivery-setup"><span class="toc-num">08</span> Delivery Setup</a>
+    <a href="#order-lifecycle"><span class="toc-num">09</span> Order lifecycle</a>
+    <a href="#architecture"><span class="toc-num">10</span> Architecture &amp; design</a>
+    <a href="#performance"><span class="toc-num">11</span> Performance</a>
+    <a href="#security"><span class="toc-num">12</span> Security</a>
+    <a href="#admin-faq"><span class="toc-num">13</span> Key facts &amp; FAQ</a>
+  </nav>
+
+  <main class="help-content">
+
+    <!-- ============ 01 AT A GLANCE ============ -->
+    <section class="help-hero" id="admin-at-a-glance">
+      <p class="help-hero-kicker">PharmaB2B · Admin Guide</p>
+      <h1>Everything you need to <em>run the platform</em> — from accounts to architecture.</h1>
+      <p>
+        This guide covers the full admin experience: managing buyer accounts, reviewing payment proofs,
+        fulfilling orders, configuring delivery pricing, and — for clients and technical stakeholders —
+        how the system is built, how it performs under load, and how it keeps data safe. Every screen
+        is an exact copy of the real UI.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/"><span class="btn-label">Sign in to the admin panel</span></a>
+        <a class="btn btn-page" href="#architecture">Skip to architecture</a>
+      </div>
+    </section>
+
+    <!-- ============ 01b ADMIN SHELL ============ -->
+    <section class="help-section">
+      <div class="help-section-head">
+        <p class="sec-kicker">The big picture</p>
+        <h2>Your admin dashboard at a glance</h2>
+      </div>
+      <div class="help-lead-rect">
+        <p>
+          When you sign in as an admin, you land on the <strong>Overview</strong> dashboard. The dark
+          sidebar on the left has seven sections: <strong>Overview</strong>, <strong>Accounts</strong>,
+          <strong>Products</strong>, <strong>Orders</strong>, <strong>Pending Reviews</strong>,
+          <strong>Fulfillment</strong> and <strong>Delivery Setup</strong>. Your name and role sit at the
+          bottom; click to open <strong>My Account</strong>. On a phone the sidebar is hidden behind the
+          <span class="kbd">☰</span> button.
+        </p>
+
+        <div class="flow" aria-label="Admin workflow">
+          <span class="flow-step st-blue"><span class="dot"></span>Review sign-ups</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step"><span class="dot"></span>Approve / block accounts</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step st-blue"><span class="dot"></span>Manage products &amp; stock</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step st-blue"><span class="dot"></span>Review payment proofs</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step st-ok"><span class="dot"></span>Ship &amp; mark delivered</span>
+        </div>
+
+        <div class="mock-window">
+          <div class="mock-bar">
+            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+            <span class="mock-url">http://127.0.0.1:8000/main.html · Overview</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-shell">
+              <aside class="shell-sidebar">
+                <div class="sidebar-brand">
+                  <div class="brand-mark-sm"><span class="brand-capsule-sm"></span></div>
+                  <div><span class="brand-name">Pharma<span class="brand-name-accent">B2B</span></span><span class="brand-tag mono">Wholesale</span></div>
+                </div>
+                <nav class="sidebar-nav">
+                  <button class="nav-item active" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+                    <span>Overview</span>
+                  </button>
+                  <button class="nav-item" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>Accounts</span>
+                  </button>
+                  <button class="nav-item" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    <span>Products</span>
+                  </button>
+                  <button class="nav-item" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <span>Orders</span>
+                  </button>
+                  <button class="nav-item" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Pending Reviews</span>
+                  </button>
+                  <button class="nav-item" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    <span>Fulfillment</span>
+                  </button>
+                  <button class="nav-item" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Delivery Setup</span>
+                  </button>
+                </nav>
+                <div class="sidebar-footer">
+                  <div class="sidebar-user"><div class="user-avatar">SA</div><div class="user-info"><span class="user-name">Admin</span><span class="user-role mono">admin · Sanimed</span></div></div>
+                  <button class="btn-logout" type="button" aria-label="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+                </div>
+              </aside>
+              <main class="shell-main">
+                <header class="shell-header">
+                  <button class="btn-menu" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
+                  <h1 class="page-title">Overview</h1>
+                </header>
+                <div class="shell-content">
+                  <div class="module admin-module">
+                    <div class="panel-head">
+                      <h2 class="panel-title">Order Overview</h2>
+                      <p class="panel-sub mono">All-time order counts by status</p>
+                    </div>
+                    <div class="overview-grid">
+                      <div class="stat-card"><span class="stat-value">287</span><span class="stat-label mono">Total Orders</span></div>
+                      <div class="stat-card stat-pending"><span class="stat-value">12</span><span class="stat-label mono">Pending</span></div>
+                      <div class="stat-card stat-approved"><span class="stat-value">48</span><span class="stat-label mono">Approved</span></div>
+                      <div class="stat-card stat-rejected"><span class="stat-value">5</span><span class="stat-label mono">Rejected</span></div>
+                      <div class="stat-card stat-shipped"><span class="stat-value">31</span><span class="stat-label mono">Shipped</span></div>
+                      <div class="stat-card stat-delivered"><span class="stat-value">191</span><span class="stat-label mono">Delivered</span></div>
+                    </div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div class="mock-caption">
+            <span class="mono">The admin shell · sidebar + overview dashboard</span>
+            <span class="mock-note">Admin view</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 02 OVERVIEW DASHBOARD ============ -->
+    <section class="help-section" id="overview-dashboard">
+      <div class="help-section-head">
+        <p class="sec-kicker">Module 1</p>
+        <h2>Overview dashboard</h2>
+        <p class="sec-sub">
+          The Overview screen is the first thing you see after sign-in. Six stat cards summarize
+          every order in the system — total, pending, approved, rejected, shipped and delivered.
+          This gives you an at-a-glance snapshot of business volume without drilling into any module.
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <div class="help-body-copy">
+          <h3>Reading the cards</h3>
+          <ul>
+            <li><strong>Total Orders</strong> — every order ever placed (all statuses combined).</li>
+            <li><strong>Pending</strong> — orders sitting in <span class="status-badge st-pending">Pending Payment</span> or <span class="status-badge st-uploaded">Payment Uploaded</span>. These need your attention.</li>
+            <li><strong>Approved</strong> — orders whose payment is verified and are waiting to be shipped.</li>
+            <li><strong>Rejected</strong> — orders where payment proof was rejected (buyer can re-upload).</li>
+            <li><strong>Shipped</strong> — orders currently in transit.</li>
+            <li><strong>Delivered</strong> — completed orders.</li>
+          </ul>
+        </div>
+
+        <div class="story">
+          <div class="story-head"><span class="mono">User story · Morning check</span><span class="story-tag">admin</span></div>
+          <div class="story-body">
+            <p class="story-quote">"I open the dashboard first thing every morning."</p>
+            <p>Admin Ana signs in and immediately sees 12 orders need attention — 5 are <span class="status-badge st-pending">Pending Payment</span> (buyers haven't uploaded proof yet) and 7 are <span class="status-badge st-uploaded">Payment Uploaded</span> (awaiting her review). She navigates to <strong>Pending Reviews</strong> to start working through them.</p>
+            <p class="story-path">The Overview never expires or caches; every page load hits the database directly, so the numbers are always current.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 03 ACCOUNTS ============ -->
+    <section class="help-section" id="accounts">
+      <div class="help-section-head">
+        <p class="sec-kicker">Module 2</p>
+        <h2>Accounts</h2>
+        <p class="sec-sub">
+          Manage every buyer who signs up, plus any other admin accounts. This is where you approve
+          new sign-ups, block accounts, reset passwords, and create accounts on behalf of a buyer.
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <ol class="steps">
+          <li><strong>Open "Accounts" from the sidebar.</strong><span>You land on a searchable, sortable table of every account — ID, Name, Email, Business, Location, Business Type, Role, Status, Joined date and an Actions column.</span></li>
+          <li><strong>Filter by status.</strong><span>The dropdown at the top lets you narrow to <em>Pending approval</em>, <em>Active</em> or <em>Blocked</em>. New sign-ups appear under "Pending approval".</span></li>
+          <li><strong>Approve a buyer.</strong><span>Click the action icon in the Actions column for a pending account → approve. The buyer can now sign in immediately.</span></li>
+          <li><strong>Block or unblock.</strong><span>An active account can be blocked (sign-in stops working). Blocked accounts can be unblocked to restore access.</span></li>
+          <li><strong>Create a new account.</strong><span>Tap <strong>+ New Account</strong> to open a form: full name, email, business name, type, phone, delivery address and a map pin. New accounts default to Active status.</span></li>
+        </ol>
+
+        <div class="mock-window">
+          <div class="mock-bar">
+            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+            <span class="mock-url">http://127.0.0.1:8000/main.html · Accounts</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-shell">
+              <aside class="shell-sidebar">
+                <div class="sidebar-brand"><div class="brand-mark-sm"><span class="brand-capsule-sm"></span></div><div><span class="brand-name">Pharma<span class="brand-name-accent">B2B</span></span><span class="brand-tag mono">Wholesale</span></div></div>
+                <nav class="sidebar-nav">
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><span>Overview</span></button>
+                  <button class="nav-item active" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Accounts</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><span>Products</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span>Orders</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Pending Reviews</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>Fulfillment</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Delivery Setup</span></button>
+                </nav>
+                <div class="sidebar-footer"><div class="sidebar-user"><div class="user-avatar">SA</div><div class="user-info"><span class="user-name">Admin</span><span class="user-role mono">admin · Sanimed</span></div></div><button class="btn-logout" type="button" aria-label="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div>
+              </aside>
+              <main class="shell-main">
+                <header class="shell-header"><button class="btn-menu" type="button" aria-label="Open menu"><span></span><span></span><span></span></button><h1 class="page-title">Accounts</h1></header>
+                <div class="shell-content">
+                  <div class="module accounts-module">
+                    <div class="panel-head accounts-head">
+                      <div><h2 class="panel-title">Accounts</h2><p class="panel-sub mono">Buyer sign-ups, approval &amp; access</p></div>
+                      <div class="accounts-head-actions"><button class="btn btn-primary" type="button"><span class="btn-label">+ New Account</span></button></div>
+                    </div>
+                    <div class="orders-toolbar accounts-toolbar">
+                      <input type="search" class="filter-input" placeholder="Search name, email, business, phone, #id (3+ chars)..." readonly>
+                      <select class="filter-input" disabled><option>All statuses</option></select>
+                      <select class="filter-input" disabled><option>All roles</option></select>
+                    </div>
+                    <div class="orders-table-wrap">
+                      <table class="data-table accounts-table">
+                        <thead><tr>
+                          <th class="num">ID</th><th>Name</th><th>Email</th><th>Business</th><th>Location</th><th>Type</th><th>Role</th><th>Status</th><th>Joined</th><th class="actions-col">Actions</th>
+                        </tr></thead>
+                        <tbody>
+                          <tr><td class="mono">101</td><td>Maria Santos</td><td class="mono">maria@medsupply.ph</td><td>MedSupply PH</td><td>Quezon City</td><td>Distributor</td><td><span class="role-chip">Buyer</span></td><td><span class="status-badge st-active">Active</span></td><td class="mono">2026-01-15</td><td class="actions-col"><span class="mock-action-dot" aria-label="View actions">⋯</span></td></tr>
+                          <tr><td class="mono">102</td><td>Jun Reyes</td><td class="mono">jun@lgucebu.gov.ph</td><td>LGU Cebu</td><td>Cebu City</td><td>LGU</td><td><span class="role-chip">Buyer</span></td><td><span class="status-badge st-pending">Pending Approval</span></td><td class="mono">2026-09-18</td><td class="actions-col"><span class="mock-action-dot" aria-label="View actions">⋯</span></td></tr>
+                          <tr><td class="mono">98</td><td>AdminAna</td><td class="mono">ana@sanimed.com</td><td>Sanimed Pharma</td><td>Manila</td><td>—</td><td><span class="role-chip admin">Admin</span></td><td><span class="status-badge st-active">Active</span></td><td class="mono">2025-12-01</td><td class="actions-col"><span class="mock-action-dot" aria-label="View actions">⋯</span></td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="orders-pagination"><span class="page-info mono">Showing 1–3 of 3</span><div class="pagination-buttons"><button class="btn btn-page" type="button" disabled>← Prev</button><button class="btn btn-page" type="button" disabled>Next →</button></div></div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div class="mock-caption">
+            <span class="mono">Accounts table · sort by any column, filter by status/role</span>
+            <span class="mock-note">+ New Account button at top-right</span>
+          </div>
+        </div>
+
+        <div class="story">
+          <div class="story-head"><span class="mono">User story · New sign-up</span><span class="story-tag">admin</span></div>
+          <div class="story-body">
+            <p class="story-quote">"A new distributor in Cebu just registered — I need to approve them."</p>
+            <p>Jun Reyes completed the self-registration form and landed on the "Account created" confirmation screen. Ana opens <strong>Accounts</strong>, filters to <em>Pending approval</em>, sees the new LGU Cebu entry, clicks the action icon and approves it. Jun can now sign in immediately.</p>
+            <p class="story-path">Approval is instant — the buyer's status flips from <span class="status-badge st-pending">Pending Approval</span> to <span class="status-badge st-active">Active</span> in the database and they can sign in on their next attempt.</p>
+          </div>
+        </div>
+
+        <div class="callout is-info">
+          <span class="callout-tag">Good to know</span>
+          <span>
+            Passwords are <strong>never</strong> visible to admins — only the buyer knows theirs.
+            Admins can <strong>reset</strong> a password (the new temporary password is shown once
+            and must be communicated to the buyer securely).
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 04 PRODUCTS ============ -->
+    <section class="help-section" id="admin-products">
+      <div class="help-section-head">
+        <p class="sec-kicker">Module 3</p>
+        <h2>Products</h2>
+        <p class="sec-sub">
+          Manage the full product catalog — add new SKUs, update prices and stock levels,
+          soft-delete discontinued items, and adjust inventory counts. Buyers see this same
+          catalog in real time.
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <ol class="steps">
+          <li><strong>Open "Products" from the sidebar.</strong><span>A searchable table shows SKU, Name, Category, Strength, Price, Stock and an Actions column. Filter by category with the dropdown, or search by name/SKU.</span></li>
+          <li><strong>Add a new product.</strong><span>Tap <strong>+ New Product</strong>. Fill in: SKU (e.g. <span class="kbd">PAR-500-BX</span>), Unit (Box / Bottle / Strip), Name, Category, Dosage strength, Price, Starting stock quantity, and Description. The SKU must be unique.</span></li>
+          <li><strong>Adjust stock.</strong><span>In the Actions column, open the Stock modal. Enter a <strong>+50</strong> or <strong>−10</strong> adjustment (positive to add, negative to deduct). The current stock count is always shown above the field.</span></li>
+          <li><strong>Edit or soft-delete.</strong><span>Edit any field via the Edit modal. Soft-delete removes the product from the buyer catalog without destroying the record — it can be restored.</span></li>
+        </ol>
+
+        <div class="mock-window">
+          <div class="mock-bar">
+            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+            <span class="mock-url">http://127.0.0.1:8000/main.html · Products</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-shell">
+              <aside class="shell-sidebar">
+                <div class="sidebar-brand"><div class="brand-mark-sm"><span class="brand-capsule-sm"></span></div><div><span class="brand-name">Pharma<span class="brand-name-accent">B2B</span></span><span class="brand-tag mono">Wholesale</span></div></div>
+                <nav class="sidebar-nav">
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><span>Overview</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Accounts</span></button>
+                  <button class="nav-item active" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><span>Products</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span>Orders</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Pending Reviews</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>Fulfillment</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Delivery Setup</span></button>
+                </nav>
+                <div class="sidebar-footer"><div class="sidebar-user"><div class="user-avatar">SA</div><div class="user-info"><span class="user-name">Admin</span><span class="user-role mono">admin · Sanimed</span></div></div><button class="btn-logout" type="button" aria-label="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div>
+              </aside>
+              <main class="shell-main">
+                <header class="shell-header"><button class="btn-menu" type="button" aria-label="Open menu"><span></span><span></span><span></span></button><h1 class="page-title">Products</h1></header>
+                <div class="shell-content">
+                  <div class="module products-module">
+                    <div class="products-toolbar">
+                      <div class="products-filters">
+                        <div class="filter-group"><input type="search" class="filter-input" placeholder="Search by name or SKU..." readonly></div>
+                        <div class="filter-group"><select class="filter-input" disabled><option>All categories</option></select></div>
+                        <button class="btn btn-filter" type="button">Apply</button>
+                      </div>
+                      <div class="products-actions"><button class="btn btn-primary btn-add-product" type="button"><span class="btn-label">+ New Product</span></button></div>
+                    </div>
+                    <div class="products-table-wrap">
+                      <table class="data-table" id="products-table">
+                        <thead><tr><th class="mono">SKU</th><th>Name</th><th>Category</th><th>Strength</th><th class="num">Price</th><th class="num">Stock</th><th class="actions-col">Actions</th></tr></thead>
+                        <tbody>
+                          <tr><td class="mono">PAR-500-BX</td><td>Paracetamol 500mg</td><td>Analgesics</td><td>500mg</td><td class="num">₱125.00</td><td class="num">320</td><td class="actions-col"><span class="mock-action-dot" aria-label="Edit">✎</span></td></tr>
+                          <tr><td class="mono">AMX-500-CP</td><td>Amoxicillin 500mg</td><td>Antibiotics</td><td>500mg</td><td class="num">₱185.00</td><td class="num low-stock">12</td><td class="actions-col"><span class="mock-action-dot" aria-label="Edit">✎</span></td></tr>
+                          <tr><td class="mono">MET-500-BX</td><td>Metformin 500mg</td><td>Antidiabetics</td><td>500mg</td><td class="num">₱95.00</td><td class="num">87</td><td class="actions-col"><span class="mock-action-dot" aria-label="Edit">✎</span></td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="products-pagination"><button class="btn btn-page" type="button" disabled>← Prev</button><span class="page-info mono">Page 1</span><button class="btn btn-page" type="button" disabled>Next →</button></div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div class="mock-caption">
+            <span class="mono">Products table · admin view with "+ New Product" button</span>
+            <span class="mock-note">Low stock highlighted in red</span>
+          </div>
+        </div>
+
+        <div class="callout is-warn">
+          <span class="callout-tag">Important</span>
+          <span>
+            Stock adjustments are <strong>audited</strong> — every change is recorded with who made it
+            and when. Buyers see the stock count in real time, so adjusting while an order is
+            being placed can prevent over-ordering.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 ORDERS ============ -->
+    <section class="help-section" id="admin-orders">
+      <div class="help-section-head">
+        <p class="sec-kicker">Module 4</p>
+        <h2>Orders</h2>
+        <p class="sec-sub">
+          A complete, searchable table of every order in the system — includes the buyer's
+          name and business, items, total, status, and the ability to open full order details.
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <div class="mock-window">
+          <div class="mock-bar">
+            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+            <span class="mock-url">http://127.0.0.1:8000/main.html · Orders</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-shell">
+              <aside class="shell-sidebar">
+                <div class="sidebar-brand"><div class="brand-mark-sm"><span class="brand-capsule-sm"></span></div><div><span class="brand-name">Pharma<span class="brand-name-accent">B2B</span></span><span class="brand-tag mono">Wholesale</span></div></div>
+                <nav class="sidebar-nav">
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><span>Overview</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Accounts</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><span>Products</span></button>
+                  <button class="nav-item active" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span>Orders</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Pending Reviews</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>Fulfillment</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Delivery Setup</span></button>
+                </nav>
+                <div class="sidebar-footer"><div class="sidebar-user"><div class="user-avatar">SA</div><div class="user-info"><span class="user-name">Admin</span><span class="user-role mono">admin · Sanimed</span></div></div><button class="btn-logout" type="button" aria-label="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div>
+              </aside>
+              <main class="shell-main">
+                <header class="shell-header"><button class="btn-menu" type="button" aria-label="Open menu"><span></span><span></span><span></span></button><h1 class="page-title">Orders</h1></header>
+                <div class="shell-content">
+                  <div class="module orders-module">
+                    <section class="orders-list-panel">
+                      <div class="panel-head"><h2 class="panel-title">Orders</h2><p class="panel-sub mono">Searchable, sortable, paginated</p></div>
+                      <div class="orders-toolbar"><input type="search" class="filter-input" placeholder="Filter any field — order #, buyer, status, total (3+ chars)..." readonly></div>
+                      <div class="orders-table-wrap">
+                        <table class="data-table">
+                          <thead><tr>
+                            <th>Order #</th><th>Date</th><th>Buyer</th><th class="num">Items</th><th class="num">Total</th><th>Status</th><th class="actions-col">Actions</th>
+                          </tr></thead>
+                          <tbody>
+                            <tr><td class="mono">ORD-20260918…</td><td class="mono">Sep 18, 2026</td><td><span class="buyer-biz">MedSupply PH</span> <span class="buyer-name">(Maria Santos)</span></td><td class="num">3</td><td class="num">₱4,165.00</td><td><span class="status-badge st-pending">Pending Payment</span></td><td class="actions-col"><span class="mock-action-dot" aria-label="View details">↗</span></td></tr>
+                            <tr><td class="mono">ORD-20260915…</td><td class="mono">Sep 15, 2026</td><td><span class="buyer-biz">LGU Cebu</span></td><td class="num">1</td><td class="num">₱2,340.00</td><td><span class="status-badge st-delivered">Delivered</span></td><td class="actions-col"><span class="mock-action-dot" aria-label="View details">↗</span></td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="orders-pagination"><span class="page-info mono">Showing 1–2 of 287</span><div class="pagination-buttons"><button class="btn btn-page" type="button" disabled>← Prev</button><button class="btn btn-page" type="button">Next →</button></div></div>
+                    </section>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div class="mock-caption">
+            <span class="mono">Orders table · admin view with Buyer column</span>
+            <span class="mock-note">Click any row to open full details</span>
+          </div>
+        </div>
+
+        <div class="help-body-copy">
+          <h3>Key differences from the buyer's Orders screen</h3>
+          <ul>
+            <li>The <strong>Buyer</strong> column is only visible to admins — shows business name + contact name.</li>
+            <li>Search works across every field: order number, buyer name, business, status, total amount.</li>
+            <li>Clicking a row opens the full order details modal (items, proof, timeline, delivery route).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 06 PENDING REVIEWS ============ -->
+    <section class="help-section" id="pending-reviews">
+      <div class="help-section-head">
+        <p class="sec-kicker">Module 5</p>
+        <h2>Pending Reviews — payment verification</h2>
+        <p class="sec-sub">
+          This is the most operationally important screen. Every order whose buyer has uploaded a
+          bank transfer proof lands here, waiting for an admin to verify and approve — or reject
+          with a reason.
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <ol class="steps">
+          <li><strong>Open "Pending Reviews".</strong><span>A queue of <span class="status-badge st-uploaded">Payment Uploaded</span> orders, sorted newest-first. Each card shows the order number, buyer, status badge, items, total, the uploaded proof reference and upload time.</span></li>
+          <li><strong>Click "View proof".</strong><span>A modal opens showing the proof image or PDF, the full item list, subtotal/delivery/grand total, and a map with the delivery route. There's also a <strong>Download Proof</strong> button for saving a local copy.</span></li>
+          <li><strong>Approve or Reject.</strong><span>If the proof matches the bank record and the amount is correct, tap <strong>Approve</strong>. The order moves to <span class="status-badge st-approved">Approved</span> and enters the Fulfillment queue. If there's a problem, tap <strong>Reject</strong> and type a clear reason — the buyer sees it in their Order History and can re-upload.</span></li>
+        </ol>
+
+        <div class="mock-window">
+          <div class="mock-bar">
+            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+            <span class="mock-url">http://127.0.0.1:8000/main.html · Pending Reviews</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-shell">
+              <aside class="shell-sidebar">
+                <div class="sidebar-brand"><div class="brand-mark-sm"><span class="brand-capsule-sm"></span></div><div><span class="brand-name">Pharma<span class="brand-name-accent">B2B</span></span><span class="brand-tag mono">Wholesale</span></div></div>
+                <nav class="sidebar-nav">
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><span>Overview</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Accounts</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><span>Products</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span>Orders</span></button>
+                  <button class="nav-item active" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Pending Reviews</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>Fulfillment</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Delivery Setup</span></button>
+                </nav>
+                <div class="sidebar-footer"><div class="sidebar-user"><div class="user-avatar">SA</div><div class="user-info"><span class="user-name">Admin</span><span class="user-role mono">admin · Sanimed</span></div></div><button class="btn-logout" type="button" aria-label="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div>
+              </aside>
+              <main class="shell-main">
+                <header class="shell-header"><button class="btn-menu" type="button" aria-label="Open menu"><span></span><span></span><span></span></button><h1 class="page-title">Payment Reviews</h1></header>
+                <div class="shell-content">
+                  <div class="module admin-module">
+                    <div class="panel-head"><h2 class="panel-title">Payment Reviews</h2><p class="panel-sub mono">Orders awaiting proof approval</p></div>
+                    <div class="admin-toolbar">
+                      <input type="search" class="filter-input" placeholder="Search order #, buyer, ref #, amount (3+ chars)..." readonly>
+                      <select class="filter-input admin-sort" disabled><option>Newest first</option></select>
+                    </div>
+                    <div class="admin-queue">
+                      <!-- review card -->
+                      <div class="review-card">
+                        <div class="review-card-head">
+                          <div>
+                            <span class="order-number mono">ORD-20260918-A1B2C3D4E5F6</span>
+                            <span class="cell-sub">MedSupply PH (Maria Santos) · Sep 18, 2026</span>
+                          </div>
+                          <span class="status-badge st-uploaded">Payment Uploaded</span>
+                        </div>
+                        <div class="review-card-body">
+                          <div class="review-items">
+                            <div class="review-item-row"><span>Paracetamol 500mg × 10</span><span class="mono">₱1,250.00</span></div>
+                            <div class="review-item-row"><span>Amoxicillin 500mg × 5</span><span class="mono">₱925.00</span></div>
+                            <div class="review-item-row"><span>Metformin 500mg × 20</span><span class="mono">₱1,900.00</span></div>
+                            <div class="review-item-row"><span class="mono label">Total</span><strong class="review-total">₱4,165.00</strong></div>
+                          </div>
+                          <div class="review-proof">
+                            <div><span class="mono label">Reference</span><span>BPI-0928394</span></div>
+                            <div><span class="mono label">Uploaded</span><span>Sep 18, 2026 3:14 PM</span></div>
+                            <button type="button" class="btn-link proof-view-link">View proof ↗</button>
+                          </div>
+                        </div>
+                        <div class="review-card-actions">
+                          <button class="btn btn-approve" type="button">Approve</button>
+                          <button class="btn btn-reject" type="button">Reject</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="pager-row"><button class="btn-page" type="button" disabled>← Prev</button><span class="page-info">Showing 1–1 of 7</span><button class="btn-page" type="button" disabled>Next →</button></div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div class="mock-caption">
+            <span class="mono">Pending Reviews queue · review card with Approve / Reject</span>
+            <span class="mock-note">Click "View proof" for full proof modal</span>
+          </div>
+        </div>
+
+        <div class="story">
+          <div class="story-head"><span class="mono">User story · Payment review</span><span class="story-tag">admin</span></div>
+          <div class="story-body">
+            <p class="story-quote">"I see a BPI deposit slip for ₱4,165 — amount matches the order total."</p>
+            <p>Ana opens <strong>Pending Reviews</strong>, clicks <strong>View proof</strong> on the first card, sees the deposit slip image and the reference <span class="kbd">BPI-0928394</span>. The total matches. She closes the modal, taps <strong>Approve</strong>. The order disappears from the queue and appears under <strong>Fulfillment → Approved</strong>.</p>
+            <p class="story-path">Approving an order: (1) verifies the proof, (2) moves status to APPROVED, (3) adds it to the Fulfillment queue, and (4) triggers a status-history audit entry with the admin's email. The buyer sees "Approved" in their Order History instantly.</p>
+          </div>
+        </div>
+
+        <div class="callout is-warn">
+          <span class="callout-tag">Important</span>
+          <span>
+            Always check: <strong>(1)</strong> the amount on the receipt matches the order total, <strong>(2)</strong> the
+            bank account number matches Sanimed's official account, and <strong>(3)</strong> the date is
+            recent. When in doubt, reject with a specific reason so the buyer knows exactly what to fix.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 07 FULFILLMENT ============ -->
+    <section class="help-section" id="fulfillment">
+      <div class="help-section-head">
+        <p class="sec-kicker">Module 6</p>
+        <h2>Fulfillment — ship &amp; deliver</h2>
+        <p class="sec-sub">
+          After payment is approved, orders enter Fulfillment. This module has three tabs:
+          <strong>Approved</strong> (ready to ship), <strong>Shipped</strong> (in transit) and
+          <strong>Delivered</strong> (complete). Each tab shows a card with the order, buyer,
+          total and an action button.
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <ol class="steps">
+          <li><strong>Open "Fulfillment" from the sidebar.</strong><span>You land on the <strong>Approved</strong> tab — orders waiting to be shipped. Each card shows the order number, buyer name, item count, total, status badge and a <strong>Ship Order</strong> button.</span></li>
+          <li><strong>Ship an order.</strong><span>Tap <strong>Ship Order</strong>. The order moves to the <strong>Shipped</strong> tab. The buyer sees "Shipped" in their Order History.</span></li>
+          <li><strong>Mark as delivered.</strong><span>Switch to the <strong>Shipped</strong> tab. Tap <strong>Mark Delivered</strong> on the order. It moves to the <strong>Delivered</strong> tab and the order is complete.</span></li>
+          <li><strong>Open full details.</strong><span>Click <strong>View details ↗</strong> on any card to see the full order details modal: payment proof, items + pricing, delivery route on a map, and the full status timeline with timestamps and who changed each status.</span></li>
+        </ol>
+
+        <div class="mock-window">
+          <div class="mock-bar">
+            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+            <span class="mock-url">http://127.0.0.1:8000/main.html · Fulfillment</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-shell">
+              <aside class="shell-sidebar">
+                <div class="sidebar-brand"><div class="brand-mark-sm"><span class="brand-capsule-sm"></span></div><div><span class="brand-name">Pharma<span class="brand-name-accent">B2B</span></span><span class="brand-tag mono">Wholesale</span></div></div>
+                <nav class="sidebar-nav">
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><span>Overview</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Accounts</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><span>Products</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span>Orders</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Pending Reviews</span></button>
+                  <button class="nav-item active" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>Fulfillment</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Delivery Setup</span></button>
+                </nav>
+                <div class="sidebar-footer"><div class="sidebar-user"><div class="user-avatar">SA</div><div class="user-info"><span class="user-name">Admin</span><span class="user-role mono">admin · Sanimed</span></div></div><button class="btn-logout" type="button" aria-label="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div>
+              </aside>
+              <main class="shell-main">
+                <header class="shell-header"><button class="btn-menu" type="button" aria-label="Open menu"><span></span><span></span><span></span></button><h1 class="page-title">Fulfillment</h1></header>
+                <div class="shell-content">
+                  <div class="module fulfillment-module">
+                    <div class="panel-head"><h2 class="panel-title">Fulfillment</h2><p class="panel-sub mono">Approved, shipped &amp; delivered orders</p></div>
+                    <div class="fulfill-tabs">
+                      <button class="fulfill-tab active" type="button">Approved</button>
+                      <button class="fulfill-tab" type="button">Shipped</button>
+                      <button class="fulfill-tab" type="button">Delivered</button>
+                    </div>
+                    <div class="admin-toolbar">
+                      <input type="search" class="filter-input" placeholder="Search order #, buyer, status, amount (3+ chars)..." readonly>
+                      <select class="filter-input admin-sort" disabled><option>Newest first</option></select>
+                    </div>
+                    <div class="admin-fulfill-list">
+                      <div class="fulfill-card">
+                        <div class="fulfill-info"><span class="order-number mono">ORD-20260916-F7G8H9I0J1K2</span><span class="cell-sub">MedSupply PH (Maria Santos) · 3 items</span></div>
+                        <div class="fulfill-total">₱4,165.00</div>
+                        <span class="status-badge st-approved">Approved</span>
+                        <button type="button" class="btn-link details-link">View details ↗</button>
+                        <button class="btn btn-primary btn-sm" type="button">Ship Order</button>
+                      </div>
+                      <div class="fulfill-card">
+                        <div class="fulfill-info"><span class="order-number mono">ORD-20260914-L3M4N5O6P7Q8</span><span class="cell-sub">LGU Cebu (Jun Reyes) · 1 item</span></div>
+                        <div class="fulfill-total">₱2,340.00</div>
+                        <span class="status-badge st-approved">Approved</span>
+                        <button type="button" class="btn-link details-link">View details ↗</button>
+                        <button class="btn btn-primary btn-sm" type="button">Ship Order</button>
+                      </div>
+                    </div>
+                    <div class="pager-row"><button class="btn-page" type="button" disabled>← Prev</button><span class="page-info">Showing 1–2 of 2</span><button class="btn-page" type="button" disabled>Next →</button></div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div class="mock-caption">
+            <span class="mono">Fulfillment · Approved tab with Ship Order buttons</span>
+            <span class="mock-note">Switch to Shipped / Delivered tabs for other statuses</span>
+          </div>
+        </div>
+
+        <div class="story">
+          <div class="story-head"><span class="mono">User story · Daily dispatch</span><span class="story-tag">admin</span></div>
+          <div class="story-body">
+            <p class="story-quote">"Three orders are approved — time to dispatch."</p>
+            <p>Ana opens <strong>Fulfillment</strong>, sees two approved orders for today. She taps <strong>Ship Order</strong> on the first one — it moves to the <strong>Shipped</strong> tab. She repeats for the second. Later that day, when the driver confirms delivery, she returns and taps <strong>Mark Delivered</strong>. Each action is logged with her admin email and timestamp.</p>
+            <p class="story-path">Clicking "View details ↗" opens a three-column modal: payment proof (left), item list + pricing breakdown (center) and a Leaflet map showing the warehouse-to-buyer route with distance, plus the full status timeline (bottom-right).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 08 DELIVERY SETUP ============ -->
+    <section class="help-section" id="delivery-setup">
+      <div class="help-section-head">
+        <p class="sec-kicker">Module 7</p>
+        <h2>Delivery Setup</h2>
+        <p class="sec-sub">
+          Configure the warehouse origin on a Leaflet map and set the delivery pricing rules:
+          rate per meter traveled, minimum order for free delivery, and maximum distance for the
+          free-delivery offer. A live preview shows sample charges for common scenarios.
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <ol class="steps">
+          <li><strong>Pin your warehouse origin.</strong><span>Click anywhere on the map to drop a green pin. This is the starting point for every delivery route calculation. You can drag the pin to adjust.</span></li>
+          <li><strong>Set delivery rate per meter.</strong><span>Enter the peso rate per meter (e.g. <span class="kbd">0.05</span> = ₱0.05/meter = ₱50/km). This is multiplied by the OSRM road distance to compute the delivery charge.</span></li>
+          <li><strong>Configure free delivery.</strong><span>Set <strong>Minimum order amount</strong> (e.g. ₱1,500) and <strong>Maximum distance</strong> (e.g. 3,000 meters). Orders above the minimum AND within the distance are delivered free.</span></li>
+          <li><strong>Check the live preview.</strong><span>Three example scenarios update in real time: ₱500 order at 2 km, ₱1,500 order at 2 km, and ₱1,500 order at 5 km. Use these to validate your pricing before saving.</span></li>
+          <li><strong>Save.</strong><span>Tap <strong>Save delivery settings</strong>. All future orders use the new rates immediately.</span></li>
+        </ol>
+
+        <div class="mock-window">
+          <div class="mock-bar">
+            <span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>
+            <span class="mock-url">http://127.0.0.1:8000/main.html · Delivery Setup</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-shell">
+              <aside class="shell-sidebar">
+                <div class="sidebar-brand"><div class="brand-mark-sm"><span class="brand-capsule-sm"></span></div><div><span class="brand-name">Pharma<span class="brand-name-accent">B2B</span></span><span class="brand-tag mono">Wholesale</span></div></div>
+                <nav class="sidebar-nav">
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><span>Overview</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Accounts</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><span>Products</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span>Orders</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Pending Reviews</span></button>
+                  <button class="nav-item" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>Fulfillment</span></button>
+                  <button class="nav-item active" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Delivery Setup</span></button>
+                </nav>
+                <div class="sidebar-footer"><div class="sidebar-user"><div class="user-avatar">SA</div><div class="user-info"><span class="user-name">Admin</span><span class="user-role mono">admin · Sanimed</span></div></div><button class="btn-logout" type="button" aria-label="Sign out"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button></div>
+              </aside>
+              <main class="shell-main">
+                <header class="shell-header"><button class="btn-menu" type="button" aria-label="Open menu"><span></span><span></span><span></span></button><h1 class="page-title">Delivery Setup</h1></header>
+                <div class="shell-content">
+                  <div class="module delivery-module">
+                    <div class="panel-head"><h2 class="panel-title">Delivery Setup</h2><p class="panel-sub mono">Configure warehouse origin and delivery pricing rules</p></div>
+                    <div class="delivery-grid">
+                      <div class="delivery-map-col">
+                        <h4 class="details-col-title">Warehouse Origin</h4>
+                        <div class="map-picker"><div class="map-picker-map map-sim"><span class="map-road r1"></span><span class="map-road r2"></span><span class="map-pin" style="left:45%; top:35%"></span></div></div>
+                        <p class="map-picker-coords mono" style="margin-top:.5rem">14.5995° N, 120.9842° E</p>
+                      </div>
+                      <div class="delivery-form-col">
+                        <form class="delivery-form" novalidate>
+                          <label class="field"><span class="field-label">Delivery rate per meter <span class="field-hint">(₱/m)</span></span><input type="number" class="filter-input" value="0.05" readonly></label>
+                          <label class="field"><span class="field-label">Free delivery minimum order <span class="field-hint">(₱)</span></span><input type="number" class="filter-input" value="1500" readonly></label>
+                          <label class="field"><span class="field-label">Free delivery max distance <span class="field-hint">(meters)</span></span><input type="number" class="filter-input" value="3000" readonly></label>
+                          <div class="delivery-preview" id="delivery-preview">
+                            <h4 class="details-col-title">Live charge preview</h4>
+                            <div class="delivery-preview-row"><span class="mono">₱500 order · 2 km away</span><span class="mono">₱100.00</span></div>
+                            <div class="delivery-preview-row"><span class="mono">₱1,500 order · 2 km away</span><span class="mono">FREE delivery</span></div>
+                            <div class="delivery-preview-row"><span class="mono">₱1,500 order · 5 km away</span><span class="mono">₱250.00</span></div>
+                          </div>
+                          <button class="btn btn-primary btn-block" type="button"><span class="btn-label">Save delivery settings</span></button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div class="mock-caption">
+            <span class="mono">Delivery Setup · map pin + pricing fields + live preview</span>
+            <span class="mock-note">Preview recalculates as you change values</span>
+          </div>
+        </div>
+
+        <div class="callout is-info">
+          <span class="callout-tag">Good to know</span>
+          <span>
+            Delivery routes use <strong>OSRM</strong> (Open Source Routing Machine) for real road
+            distances. If the route server is unreachable, a straight-line (haversine) fallback is
+            used and the charge is still calculated. The pin and route always work regardless of
+            tile availability.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 09 ORDER LIFECYCLE ============ -->
+    <section class="help-section" id="order-lifecycle">
+      <div class="help-section-head">
+        <p class="sec-kicker">How it all fits together</p>
+        <h2>Complete order lifecycle — admin side</h2>
+      </div>
+
+      <div class="help-lead-rect">
+        <div class="flow" aria-label="Full admin order lifecycle">
+          <span class="flow-step"><span class="dot"></span>Buyer registers</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step st-blue"><span class="dot"></span>Admin approves account</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step"><span class="dot"></span>Buyer places order</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step st-blue"><span class="dot"></span>Buyer uploads proof</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step st-blue"><span class="dot"></span>Admin reviews &amp; approves</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step"><span class="dot"></span>Admin ships</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step st-ok"><span class="dot"></span>Admin marks delivered</span>
+        </div>
+
+        <div class="help-body-copy">
+          <h3>Status transitions controlled by the admin</h3>
+          <ul>
+            <li><strong>APPROVED</strong> → only reachable from <span class="status-badge st-uploaded">Payment Uploaded</span> by an admin clicking Approve.</li>
+            <li><strong>PAYMENT_REJECTED</strong> → only from <span class="status-badge st-uploaded">Payment Uploaded</span> by an admin clicking Reject with a reason.</li>
+            <li><strong>SHIPPED</strong> → only from <span class="status-badge st-approved">Approved</strong> by an admin clicking Ship Order in Fulfillment.</li>
+            <li><strong>DELIVERED</strong> → only from <span class="status-badge st-shipped">Shipped</span> by an admin clicking Mark Delivered.</li>
+          </ul>
+        </div>
+
+        <div class="help-body-copy">
+          <h3>What the buyer controls (no admin needed)</h3>
+          <ul>
+            <li><strong>CANCELLED</strong> → buyer can cancel only while status is <span class="status-badge st-pending">Pending Payment</span> or <span class="status-badge st-rejected">Payment Rejected</span>. Stock is released back.</li>
+            <li><strong>Upload proof</strong> → buyer can upload a new proof at any time while status is <span class="status-badge st-pending">Pending Payment</span> or <span class="status-badge st-rejected">Payment Rejected</span> (up to 20 proofs/day).</li>
+          </ul>
+        </div>
+
+        <div class="help-body-copy">
+          <h3>Audit trail</h3>
+          <ul>
+            <li>Every status change is recorded with: <strong>old_status</strong>, <strong>new_status</strong>, <strong>changed_by</strong> (user ID), <strong>changed_by_role</strong> (admin/buyer), <strong>changed_by_email</strong> and <strong>changed_at</strong> (timestamp).</li>
+            <li>The timeline is visible in the Fulfillment order details modal and the buyer's Order History modal.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 10 ARCHITECTURE ============ -->
+    <section class="help-section" id="architecture">
+      <div class="help-section-head">
+        <p class="sec-kicker">Technical overview</p>
+        <h2>Architecture &amp; design</h2>
+        <p class="sec-sub">
+          PharmaB2B is a single-page application with a Python/FastAPI backend, MySQL database,
+          Redis cache layer, and a vanilla-JS frontend. Everything runs on a single server
+          (MAMP stack on macOS in development, any Linux host in production).
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <div class="arch-diagram" aria-label="System architecture diagram">
+          <div class="arch-lane">
+            <span class="arch-lane-label">Client Layer</span>
+            <div class="arch-nodes">
+              <div class="arch-node"><span class="arch-node-title">Browser SPA</span><span class="arch-node-sub mono">Vanilla JS · Fetch API · Leaflet maps</span></div>
+            </div>
+          </div>
+          <div class="arch-flow">↓ HTTPS ↓</div>
+          <div class="arch-lane">
+            <span class="arch-lane-label">Application Layer</span>
+            <div class="arch-nodes">
+              <div class="arch-node is-core"><span class="arch-node-title">FastAPI</span><span class="arch-node-sub mono">async · uvicorn · middleware (rate-limit, session)</span></div>
+              <div class="arch-node"><span class="arch-node-title">Static Files</span><span class="arch-node-sub mono">HTML · CSS · JS · fonts · Leaflet vendor</span></div>
+            </div>
+          </div>
+          <div class="arch-flow">↓ async SQLAlchemy ↓</div>
+          <div class="arch-lane">
+            <span class="arch-lane-label">Data Layer</span>
+            <div class="arch-nodes">
+              <div class="arch-node is-core"><span class="arch-node-title">MySQL 8</span><span class="arch-node-sub mono">MAMP (dev) · InnoDB · JSON columns</span></div>
+              <div class="arch-node"><span class="arch-node-title">Redis</span><span class="arch-node-sub mono">On-demand · session cache · lazy-connect</span></div>
+              <div class="arch-node"><span class="arch-node-title">Uploads Dir</span><span class="arch-node-sub mono">Payment proofs · JPG/PNG/PDF ≤ 5MB</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Component</th><th>Technology</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>Backend framework</td><td class="mono">FastAPI (Python 3.11+)</td><td>Async REST API, Pydantic validation, OpenAPI docs</td></tr>
+              <tr><td>ORM</td><td class="mono">SQLAlchemy 2.0 (async)</td><td>Connection pooling, typed queries, MySQL dialect</td></tr>
+              <tr><td>Database</td><td class="mono">MySQL 8.0 (InnoDB)</td><td>Orders, accounts, products, audit history</td></tr>
+              <tr><td>Cache / sessions</td><td class="mono">Redis (on-demand)</td><td>Rate-limit counters, principal cache; lazy-loaded</td></tr>
+              <tr><td>Frontend</td><td class="mono">Vanilla JS SPA</td><td>No build step; module scripts, Fetch API</td></tr>
+              <tr><td>Maps</td><td class="mono">Leaflet 1.9.4 + OSRM</td><td>Delivery pin, route drawing, distance calculation</td></tr>
+              <tr><td>Authentication</td><td class="mono">JWT (HttpOnly cookie)</td><td>S-12: SameSite=Strict, secure in production</td></tr>
+              <tr><td>Password hashing</td><td class="mono">Argon2id</td><td>OWASP-recommended adaptive hash</td></tr>
+              <tr><td>File storage</td><td class="mono">Local uploads/ dir</td><td>Payment proofs; MIME/type/size validated server-side</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="help-body-copy">
+          <h3>Request flow (simplified)</h3>
+          <ol>
+            <li>Browser sends <code>fetch()</code> request with JWT cookie → FastAPI receives.</li>
+            <li>Middleware: checks rate limit, validates session (Redis or principal cache), attaches user to request state.</li>
+            <li>Route handler: validates input (Pydantic), queries MySQL via async SQLAlchemy.</li>
+            <li>Response: JSON body + <code>Set-Cookie</code> refreshes the JWT expiry if needed.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 11 PERFORMANCE ============ -->
+    <section class="help-section" id="performance">
+      <div class="help-section-head">
+        <p class="sec-kicker">Technical overview</p>
+        <h2>Performance</h2>
+        <p class="sec-sub">
+          Designed to handle 10,000+ concurrent sessions on commodity hardware. The key
+          performance levers are connection pooling, principal caching, and proper database indexing.
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Metric / Setting</th><th>Value</th><th>What it means</th></tr></thead>
+            <tbody>
+              <tr><td>Connection pool size</td><td class="mono">50 primary + 30 secondary</td><td>Handles ~80 concurrent MySQL connections without queuing</td></tr>
+              <tr><td>Principal cache</td><td class="mono">In-process LRU + Redis</td><td>User identity loaded once, reused across requests; avoids repeated DB hits</td></tr>
+              <tr><td>Session timeout</td><td class="mono">60 minutes</td><td>HttpOnly JWT expires; buyer/admin must re-authenticate</td></tr>
+              <tr><td>Pagination</td><td class="mono">20 items/page default</td><td>Keeps response payloads small and rendering fast</td></tr>
+              <tr><td>Upload limit</td><td class="mono">5 MB per file, 20/day</td><td>Prevents storage abuse; validated server-side</td></tr>
+              <tr><td>Rate limit</td><td class="mono">Per-IP sliding window</td><td>Protects login and proof-upload endpoints from abuse</td></tr>
+              <tr><td>DB indexes</td><td class="mono">order_number, status, buyer_id, created_at</td><td>Fast lookups and sorts on the most-filtered columns</td></tr>
+              <tr><td>Redis connection</td><td class="mono">Lazy (on-demand)</td><td>Only connects when rate-limit or cache is first needed; no startup penalty</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout is-info">
+          <span class="callout-tag">Good to know</span>
+          <span>
+            In development (MAMP), the pool is intentionally small. For production, increase
+            <code>POOL_SIZE</code> and <code>MAX_OVERFLOW</code> in the database URL and ensure
+            MySQL's <code>max_connections</code> is set accordingly.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 12 SECURITY ============ -->
+    <section class="help-section" id="security">
+      <div class="help-section-head">
+        <p class="sec-kicker">Technical overview</p>
+        <h2>Security</h2>
+        <p class="sec-sub">
+          PharmaB2B follows OWASP Top 10 best practices. Every input is validated server-side,
+          passwords are hashed with Argon2id, sessions use HttpOnly JWT cookies with SameSite=Strict,
+          and every file upload is type-checked before being saved.
+        </p>
+      </div>
+
+      <div class="help-lead-rect">
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead><tr><th>Security Control</th><th>Implementation</th><th>Ref</th></tr></thead>
+            <tbody>
+              <tr><td>Password hashing</td><td class="mono">Argon2id (OWASP recommended)</td><td>S-1</td></tr>
+              <tr><td>Session management</td><td class="mono">JWT in HttpOnly cookie, SameSite=Strict</td><td>S-12</td></tr>
+              <tr><td>Rate limiting</td><td class="mono">Per-IP sliding window on auth + proof-upload</td><td>S-5</td></tr>
+              <tr><td>Account lockout</td><td class="mono">Progressive lockout after failed login attempts</td><td>S-6</td></tr>
+              <tr><td>Input validation</td><td class="mono">Pydantic models on every endpoint; SQL injection impossible via ORM</td><td>S-2</td></tr>
+              <tr><td>File upload safety</td><td class="mono">MIME-type check, extension whitelist (JPG/PNG/PDF), size cap 5MB</td><td>S-10</td></tr>
+              <tr><td>CORS</td><td class="mono">Same-origin only; no cross-origin API access</td><td>S-8</td></tr>
+              <tr><td>Content Security Policy</td><td class="mono">'self' for scripts and styles; no inline JS</td><td>S-9</td></tr>
+              <tr><td>Error handling</td><td class="mono">Generic messages to client; full trace only in server logs</td><td>S-7</td></tr>
+              <tr><td>Audit trail</td><td class="mono">Every status change logged with who/when/role</td><td>S-14</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="help-body-copy">
+          <h3>Key security notes for clients</h3>
+          <ul>
+            <li><strong>No payment card data is ever stored</strong> — settlement is offline bank transfer only.</li>
+            <li><strong>Admin passwords are never visible</strong> to anyone, including other admins — only reset is available.</li>
+            <li><strong>File uploads are validated server-side</strong> — even if a malicious file is renamed to <code>.jpg</code>, the server checks the actual MIME type.</li>
+            <li><strong>Redis is lazy-loaded</strong> — if Redis is unreachable, the app degrades gracefully (session validation falls back to database principal lookup).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 13 FAQ ============ -->
+    <section class="help-section" id="admin-faq">
+      <div class="help-section-head">
+        <p class="sec-kicker">Quick reference</p>
+        <h2>Key facts &amp; FAQ</h2>
+      </div>
+
+      <div class="help-lead-rect">
+        <div class="help-body-copy">
+          <h3>Key facts</h3>
+          <ul>
+            <li><strong>There is no online payment gateway</strong> — all settlement is offline bank transfer + proof upload.</li>
+            <li><strong>Buyer self-registration always requires admin approval</strong> before first sign-in.</li>
+            <li><strong>Delivery fee</strong> = (road distance in meters) × (rate per meter). Free delivery when order ≥ minimum amount AND distance ≤ max distance.</li>
+            <li><strong>Stock is reserved</strong> the moment a buyer places an order — other buyers see reduced stock in real time.</li>
+            <li><strong>Payment proof limit</strong>: 20 uploads per buyer per day (prevents abuse).</li>
+            <li><strong>Order number format</strong>: <code>ORD-YYYYMMDD-12-hex-chars</code> — includes date for easy sorting.</li>
+            <li><strong>Session timeout</strong>: 60 minutes of inactivity → forced sign-out.</li>
+          </ul>
+        </div>
+
+        <div class="help-body-copy">
+          <h3>Frequently asked questions</h3>
+          <ul>
+            <li><strong>Can I restore a soft-deleted product?</strong> — Yes. Soft-delete hides it from buyers but the record stays in the database. Contact the developer to restore.</li>
+            <li><strong>What if the map tile server is blocked?</strong> — The app detects blocked OpenStreetMap tiles and transparently switches to MapTiler (if a fallback key is configured). Pins and routes always work regardless.</li>
+            <li><strong>Can two admins approve the same order?</strong> — No. The first approval wins; the second admin sees the order has already moved to Approved.</li>
+            <li><strong>What happens if Redis is down?</strong> — The app degrades gracefully: rate limiting is skipped and principal lookup falls back to the database. No user-visible errors.</li>
+            <li><strong>How do I change the password policy?</strong> — Edit the minimum length and complexity rules in the Pydantic validator on the registration and password-change endpoints.</li>
+            <li><strong>Can buyers see each other's orders?</strong> — No. Every query is scoped to the authenticated user's ID (buyers) or unrestricted (admins only).</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="/static/js/help.js?v=1"></script>
+</body>
+</html>
